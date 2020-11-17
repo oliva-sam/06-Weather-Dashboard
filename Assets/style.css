@@ -1,0 +1,16 @@
+#header {
+    text-align: center;
+    color: #ffffff;
+    background-color: rgb(32, 32, 32);
+    }
+
+
+#cities-sidebar {
+    background-color: rgb(238, 236, 236);
+}
+
+#currentCityInfo {
+    border: solid;
+    border-radius: 5px;
+    border-color: gray;
+}
