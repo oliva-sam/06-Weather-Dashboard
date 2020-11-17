@@ -21,7 +21,15 @@ function lookupCity (city) {
        var lat = apiData.coord.lat
        var lon =apiData.coord.lon
        lookupUV(lat,lon)
+       var previousCity = JSON.parse(localStorage.getItem("weatherAPI")) || []
+       console.log(previousCity)
+       if (previousCity.indexOf(city) === -1) {
+           previousCity.push(city)
+           localStorage.setItem("weatherAPI", JSON.stringify(previousCity))
+           displayLocalStorage()
+       } 
     })
+
 }
 
 function lookupUV (lat,lon) {
@@ -32,6 +40,16 @@ function lookupUV (lat,lon) {
         url: queryURL
    }).then (function(apiData) {
        console.log(apiData)
-     $("#uvIndex").val(`:humidity:${apiData.value}`)
+     $("#uvIndex").text(`UV index: ${apiData.value}`)
    })
 }
+
+function displayLocalStorage () {
+    var previousCities = JSON.parse(localStorage.getItem("weatherAPI")) || []
+    var allCities = ""
+    for (let i = 0; i <previousCities.length; i++) {
+        allCities+=`<li><button class="previousCity"> ${previousCities[i]}<button/></li>`
+    } 
+    $("#previousCitiesList").html(allCities)
+}
+displayLocalStorage()
