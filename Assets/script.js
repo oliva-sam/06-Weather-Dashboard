@@ -15,10 +15,10 @@ function lookupCity(city) {
         url: queryURL
     }).then(function (apiData) {
       //  console.log(apiData)
-        $("#temperature").text(`Temperature: ${apiData.main.temp}F`)
+        $("#temperature").text(`Temperature: ${apiData.main.temp} °F`)
         $("#humidity").text(`Humidity: ${apiData.main.humidity}%`)
-        $("#windSpeed").text(`Windspeed: ${apiData.wind.speed}MPH`)
-        $("#currentCityName").append(`<img src="http://openweathermap.org/img/wn/${apiData.weather[0].icon}@2x.png"/>`)
+        $("#windSpeed").text(`Windspeed: ${apiData.wind.speed} MPH`)
+        $("#currentCityName").html(`<img src="http://openweathermap.org/img/wn/${apiData.weather[0].icon}@2x.png"/>`)
         var lat = apiData.coord.lat
         var lon = apiData.coord.lon
         lookupUV(lat, lon)
@@ -54,8 +54,8 @@ function fiveDayForecast(city) {
         for (var i = 1; i < 6; i++) {
          //   console.log(apiData.list[i].weather[0].icon)
             var icon = apiData.list[i].weather[0].icon
-            $("#" + i + "-currentCityImg").append(`<img src="http://openweathermap.org/img/wn/${icon}@2x.png"/>`)
-            $("#" + i + "-temperature").text(`Temp: ${apiData.list[i].main.temp}F`)
+            $("#" + i + "-currentCityImg").html(`<img src="http://openweathermap.org/img/wn/${icon}@2x.png"/>`)
+            $("#" + i + "-temperature").text(`Temp: ${apiData.list[i].main.temp} °F`)
             $("#" + i + "-humidity").text(`Humidity: ${apiData.list[i].main.humidity}%`)
         }
     })
@@ -65,8 +65,36 @@ function displayLocalStorage() {
     var previousCities = JSON.parse(localStorage.getItem("weatherAPI")) || []
     var allCities = ""
     for (var i = 0; i < previousCities.length; i++) {
-        allCities += `<button class="previousCity"> ${previousCities[i]}<button/>`
+        allCities += `<button class="previousCity">${previousCities[i]}</button>`
     }
-    $("#previousCitiesList").html(allCities)
+    $("#previousCitiesList").append(allCities)
 }
+
 displayLocalStorage()
+
+$(".previousCity").on("click",function(){
+   // console.log("hi")
+ //   console.log(this.textContent)
+    var localStorageCity = this.textContent
+    lookupStorageCity(localStorageCity)
+    fiveDayForecast(localStorageCity)
+    $("#currentCityName").text(localStorageCity)
+
+})
+
+function lookupStorageCity(city) {
+    var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=aa4d71cf73d20b64aa3e608785427cd8&units=imperial`
+    $.ajax({
+        method: "GET",
+        url: queryURL
+    }).then(function (apiData) {
+        $("#temperature").text(`Temperature: ${apiData.main.temp} °F`)
+        $("#humidity").text(`Humidity: ${apiData.main.humidity}%`)
+        $("#windSpeed").text(`Windspeed: ${apiData.wind.speed} MPH`)
+        $("#currentCityName").append(`<img src="http://openweathermap.org/img/wn/${apiData.weather[0].icon}@2x.png"/>`)
+        var lat = apiData.coord.lat
+        var lon = apiData.coord.lon
+        lookupUV(lat, lon)
+    })
+
+}
