@@ -1,11 +1,13 @@
-console.log("hi")
+//console.log("hi")
 $("#searchBtn").on("click", function (event) {
     event.preventDefault()
     let userCity = $("#userCity").val()
    // console.log(userCity)
     lookupCity(userCity)
-    $("#currentCityName").text(userCity)
     fiveDayForecast(userCity)
+    var currentDate = moment().format("l")
+    console.log(currentDate)
+    $("#currentCityName").text(`${userCity} (${currentDate})`)
 })
 
 function lookupCity(city) {
@@ -40,7 +42,17 @@ function lookupUV(lat, lon) {
         url: queryURL
     }).then(function (apiData) {
        // console.log(apiData)
-        $("#uvIndex").text(`UV index: ${apiData.value}`)
+       if (0 <= apiData.value <= 2) {
+        $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:green")
+       } else if (3 <= apiData.value <= 5) {
+         $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:yellow")
+       } else if(6 <= apiData.value <=7) {
+         $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:orange")
+       } else if (8 <= apiData <=10) {
+          $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:red")
+       } else {
+        $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:purple")
+       }
     })
 }
 
@@ -54,6 +66,8 @@ function fiveDayForecast(city) {
         for (var i = 1; i < 6; i++) {
          //   console.log(apiData.list[i].weather[0].icon)
             var icon = apiData.list[i].weather[0].icon
+            var tomorrowDate = moment().add(i, "days").format("l")
+            $("#" + i + "-date").text(tomorrowDate)
             $("#" + i + "-currentCityImg").html(`<img src="http://openweathermap.org/img/wn/${icon}@2x.png"/>`)
             $("#" + i + "-temperature").text(`Temp: ${apiData.list[i].main.temp} °F`)
             $("#" + i + "-humidity").text(`Humidity: ${apiData.list[i].main.humidity}%`)
@@ -65,7 +79,7 @@ function displayLocalStorage() {
     var previousCities = JSON.parse(localStorage.getItem("weatherAPI")) || []
     var allCities = ""
     for (var i = 0; i < previousCities.length; i++) {
-        allCities += `<button class="previousCity">${previousCities[i]}</button>`
+        allCities += `<div class="row"><button class="previousCity">${previousCities[i]}</button></div>`
     }
     $("#previousCitiesList").append(allCities)
 }
@@ -78,8 +92,9 @@ $(".previousCity").on("click",function(){
     var localStorageCity = this.textContent
     lookupStorageCity(localStorageCity)
     fiveDayForecast(localStorageCity)
-    $("#currentCityName").text(localStorageCity)
-
+    var currentDate = moment().format("l")
+    //console.log(currentDate)
+    $("#currentCityName").text(localStorageCity + (" (" + currentDate + ")"))
 })
 
 function lookupStorageCity(city) {
