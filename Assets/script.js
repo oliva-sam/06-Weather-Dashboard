@@ -1,11 +1,14 @@
 //console.log("hi")
-viewLastCity()
-//$("#weatherInfoArea").attr("style", "display : none")
+$("#weatherInfoArea").attr("style", "display : none")
+displayLocalStorage()
+if (localStorage.getItem("weatherAPI") !== null) {
+    viewLastCity();
+}
 
 $("#searchBtn").on("click", function (event) {
     event.preventDefault()
     let userCity = $("#userCity").val()
-   // console.log(userCity)
+    // console.log(userCity)
     lookupCity(userCity)
     fiveDayForecast(userCity)
     var currentDate = moment().format("l")
@@ -20,7 +23,7 @@ function lookupCity(city) {
         method: "GET",
         url: queryURL
     }).then(function (apiData) {
-      //  console.log(apiData)
+        //  console.log(apiData)
         $("#temperature").text(`Temperature: ${apiData.main.temp} °F`)
         $("#humidity").text(`Humidity: ${apiData.main.humidity}%`)
         $("#windSpeed").text(`Windspeed: ${apiData.wind.speed} MPH`)
@@ -29,7 +32,7 @@ function lookupCity(city) {
         var lon = apiData.coord.lon
         lookupUV(lat, lon)
         var previousCity = JSON.parse(localStorage.getItem("weatherAPI")) || []
-       // console.log(previousCity)
+        // console.log(previousCity)
         if (previousCity.indexOf(city) === -1) {
             previousCity.unshift(city)
             localStorage.setItem("weatherAPI", JSON.stringify(previousCity))
@@ -46,17 +49,17 @@ function lookupUV(lat, lon) {
         url: queryURL
     }).then(function (apiData) {
         console.log(apiData.value)
-       if (0 <= apiData.value && apiData.value <= 2) {
-        $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:green")
-       } else if (2 < apiData.value && apiData.value <= 5) {
-         $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:yellow")
-       } else if(5 < apiData.value && apiData.value <= 7) {
-         $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:orange")
-       } else if (7 < apiData && apiData.value <=10) {
-          $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:red")
-         } else {
-        $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:purple")
-       }
+        if (0 <= apiData.value && apiData.value <= 2) {
+            $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:green")
+        } else if (2 < apiData.value && apiData.value <= 5) {
+            $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:yellow")
+        } else if (5 < apiData.value && apiData.value <= 7) {
+            $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:orange")
+        } else if (7 < apiData && apiData.value <= 10) {
+            $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:red")
+        } else {
+            $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:purple")
+        }
     })
 }
 
@@ -68,9 +71,9 @@ function displayLocalStorage() {
     }
     $("#previousCitiesList").html(allCities)
 
-    $(".previousCity").on("click",function(){
+    $(".previousCity").on("click", function () {
         console.log("hi")
-     //   console.log(this.textContent)
+        //   console.log(this.textContent)
         var localStorageCity = this.textContent
         lookupStorageCity(localStorageCity)
         fiveDayForecast(localStorageCity)
@@ -79,7 +82,7 @@ function displayLocalStorage() {
         $("#currentCityName").text(localStorageCity + (" (" + currentDate + ")"))
         $("#weatherInfoArea").attr("style", "display : block")
     })
-    
+
     function lookupStorageCity(city) {
         var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=aa4d71cf73d20b64aa3e608785427cd8&units=imperial`
         $.ajax({
@@ -94,7 +97,7 @@ function displayLocalStorage() {
             var lon = apiData.coord.lon
             lookupUV(lat, lon)
         })
-    
+
     }
 }
 
@@ -104,9 +107,9 @@ function fiveDayForecast(city) {
         method: "GET",
         url: queryURL
     }).then(function (apiData) {
- //       console.log(apiData)
+        //       console.log(apiData)
         for (var i = 1; i < 6; i++) {
-         //   console.log(apiData.list[i].weather[0].icon)
+            //   console.log(apiData.list[i].weather[0].icon)
             var icon = apiData.list[i].weather[0].icon
             var tomorrowDate = moment().add(i, "days").format("l")
             $("#" + i + "-date").text(tomorrowDate)
@@ -117,13 +120,14 @@ function fiveDayForecast(city) {
     })
 }
 
-function viewLastCity () {
-    var pastCity= JSON.parse(localStorage.getItem("weatherAPI"))
+function viewLastCity() {
+    var pastCity = JSON.parse(localStorage.getItem("weatherAPI"))
     var currentDate = moment().format("l")
     lookupCity(pastCity[0])
     fiveDayForecast(pastCity[0])
     $("#currentCityName").text(pastCity[0] + (" (" + currentDate + ")"))
     $("#weatherInfoArea").attr("style", "display : block")
+
 }
 
-displayLocalStorage()
+
