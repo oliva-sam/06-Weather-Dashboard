@@ -1,30 +1,17 @@
+/* for Weather Dashboard Title of Page */
 #header {
     text-align: center;
     color: #ffffff;
     background-color: rgb(32, 32, 32);
     }
 
-
+/* for past cities buttons and search bar area */
 #cities-sidebar {
     background-color: rgb(238, 236, 236);
     padding-left: 25px;
     padding-right: 0px;
     padding-bottom: 15px;
 }
-
-#blankSpace {
-    padding: 20px;
-}
-
-#currentCityInfo {
-    border: solid;
-    border-radius: 5px;
-    border-color: gray;
-    border-width: thin;
-    padding-left: 20px;
-    padding-bottom: 20px
-}
-
 .previousCity {
     padding: 5px;
     width: 90%;
@@ -34,13 +21,25 @@
     border-radius: 3px;
 }
 
+/* let's not bring up again this weird way of how I added space */
+#blankSpace {
+    padding: 20px;
+}
 
+/* for all the weather data area */
+#currentCityInfo {
+    border: solid;
+    border-radius: 5px;
+    border-color: gray;
+    border-width: thin;
+    padding-left: 20px;
+    padding-bottom: 20px
+}
 #uvIndex {
     color: #ffffff;
     border-radius: 2px;
     padding: 5px;
 }
-
 .forecastDays {
     background-color: rgb(103, 182, 209);
     color:  #ffffff;
