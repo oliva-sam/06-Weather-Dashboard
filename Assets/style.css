@@ -7,10 +7,44 @@
 
 #cities-sidebar {
     background-color: rgb(238, 236, 236);
+    padding-left: 25px;
+    padding-right: 0px;
+    padding-bottom: 15px;
+}
+
+#blankSpace {
+    padding: 20px;
 }
 
 #currentCityInfo {
     border: solid;
     border-radius: 5px;
     border-color: gray;
+    border-width: thin;
+    padding-left: 20px;
+    padding-bottom: 20px
+}
+
+.previousCity {
+    padding: 5px;
+    width: 90%;
+    text-align: left;
+    background-color: #ffffff;
+    border-width: thin;
+    border-radius: 3px;
+}
+
+
+#uvIndex {
+    color: #ffffff;
+    border-radius: 2px;
+    padding: 5px;
+}
+
+.forecastDays {
+    background-color: rgb(103, 182, 209);
+    color:  #ffffff;
+    text-align: left;
+    padding-left: 12px;
+    margin: 12px;
 }

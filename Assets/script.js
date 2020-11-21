@@ -1,5 +1,6 @@
 //console.log("hi")
-$("#weatherInfoArea").attr("style", "display : none")
+viewLastCity()
+//$("#weatherInfoArea").attr("style", "display : none")
 
 $("#searchBtn").on("click", function (event) {
     event.preventDefault()
@@ -46,15 +47,15 @@ function lookupUV(lat, lon) {
     }).then(function (apiData) {
         console.log(apiData.value)
        if (0 <= apiData.value && apiData.value <= 2) {
-        $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:green")
+        $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:green")
        } else if (2 < apiData.value && apiData.value <= 5) {
-         $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:yellow")
+         $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:yellow")
        } else if(5 < apiData.value && apiData.value <= 7) {
-         $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:orange")
+         $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:orange")
        } else if (7 < apiData && apiData.value <=10) {
-          $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:red")
+          $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:red")
          } else {
-        $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:purple")
+        $("#uvIndex").text(`${apiData.value}`).attr("style", "background-color:purple")
        }
     })
 }
@@ -114,6 +115,15 @@ function fiveDayForecast(city) {
             $("#" + i + "-humidity").text(`Humidity: ${apiData.list[i].main.humidity}%`)
         }
     })
+}
+
+function viewLastCity () {
+    var pastCity= JSON.parse(localStorage.getItem("weatherAPI"))
+    var currentDate = moment().format("l")
+    lookupCity(pastCity[0])
+    fiveDayForecast(pastCity[0])
+    $("#currentCityName").text(pastCity[0] + (" (" + currentDate + ")"))
+    $("#weatherInfoArea").attr("style", "display : block")
 }
 
 displayLocalStorage()
