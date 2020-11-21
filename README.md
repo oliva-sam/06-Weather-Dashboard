@@ -18,7 +18,7 @@ Users will be able to see past cities they've searched as well.
     2. Icon
     3. Temperature
     4. Humidity
-    
+
 > Side bar displays:
     > clickable buttons of past cities user has searched
 ```
@@ -29,7 +29,7 @@ Users will be able to see past cities they've searched as well.
 ![example-pic](./Assets/06-server-side-apis-homework-demo.png)
 
 ##### Actual
-![actual-gif]()
+![actual-gif](./Assets/weather-dashboard-actual.gif)
 
 ### URL of Depoloyed Application
 
