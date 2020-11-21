@@ -1,4 +1,6 @@
 //console.log("hi")
+$("#weatherInfoArea").attr("style", "display : none")
+
 $("#searchBtn").on("click", function (event) {
     event.preventDefault()
     let userCity = $("#userCity").val()
@@ -8,6 +10,7 @@ $("#searchBtn").on("click", function (event) {
     var currentDate = moment().format("l")
     console.log(currentDate)
     $("#currentCityName").text(`${userCity} ${currentDate}`)
+    $("#weatherInfoArea").attr("style", "display : block")
 })
 
 function lookupCity(city) {
@@ -44,19 +47,14 @@ function lookupUV(lat, lon) {
         console.log(apiData.value)
        if (0 <= apiData.value && apiData.value <= 2) {
         $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:green")
-        console.log("green")
        } else if (2 < apiData.value && apiData.value <= 5) {
          $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:yellow")
-         console.log("yellow")
        } else if(5 < apiData.value && apiData.value <= 7) {
          $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:orange")
-         console.log("orange")
        } else if (7 < apiData && apiData.value <=10) {
           $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:red")
-          console.log("red")
-       } else {
+         } else {
         $("#uvIndex").text(`UV Index: ${apiData.value}`).attr("style", "background-color:purple")
-        console.log("purple")
        }
     })
 }
@@ -78,6 +76,7 @@ function displayLocalStorage() {
         var currentDate = moment().format("l")
         //console.log(currentDate)
         $("#currentCityName").text(localStorageCity + (" (" + currentDate + ")"))
+        $("#weatherInfoArea").attr("style", "display : block")
     })
     
     function lookupStorageCity(city) {
